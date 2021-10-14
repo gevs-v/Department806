@@ -47,7 +47,7 @@ main(void)
 
         // старт таймера на копирование данных на устройство, выполнение функции и копирование результата обратно
         cudaEventRecord(start);
-
+        
         // выделение массивов заданной длины на устройстве
         float* d_A = NULL;
         cudaMalloc((void**)&d_A, size);
@@ -62,7 +62,7 @@ main(void)
         int blocksPerGrid = (numElements + threadsPerBlock - 1) / threadsPerBlock;
 
         // запуск выполнения функции
-        vectorSqrt << <blocksPerGrid, threadsPerBlock >> > (d_A, d_C, numElements);
+        vectorSqrt <<<blocksPerGrid, threadsPerBlock >>> (d_A, d_C, numElements);
 
         // копирование результатов обратно на хост
         cudaMemcpy(h_C, d_C, size, cudaMemcpyDeviceToHost);
@@ -84,7 +84,7 @@ main(void)
 
         numElements *= 10;
     }
-
+    
     return 0;
 }
 
